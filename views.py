@@ -58,4 +58,7 @@ def send(request):
 	#the actual saving is here
 	gametemp =  Game(name = r.get('game'), developer = Developer.objects.get(name = devname), lastyear = lytemp)
 	gametemp.save()
-	return HttpResponse('Muthafuckin\' success!')
+	successtext = 'Success! ' + r.get('game') + ' by ' + devname + ' added!'
+	return render(request, 'submit/form.html', {
+	    'developer': Developer.objects.all(),
+	    'systemmessage' : successtext})
