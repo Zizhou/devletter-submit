@@ -6,25 +6,26 @@
 <br>
 <form action = '{% url 'submit:send' %}' method = 'post' name = 'submitform'>
 {% csrf_token %}
-    <div>
-    Game: <input type = 'text' name = 'game' required>
-    </div>
-    <div>
-    Developer:
-	<select name = 'dev-drop' >
-	    <option value = 'NotADev'>Add New Developer</option>
+    <table>
+    <tr><td>Game:</td><td><input type = 'text' name = 'game' required></td></tr>
+    <tr><td>Developer:</td>
+	<td><select name = 'dev-drop' >
+	    <option value = 'NotADev'>Add New Developer:</option>
 	    <option value = 'NotADev'>----------</option>
 	    {% for d in developer%}
 		<option value = '{{d.name}}'>{{d.name}}</option>
 	    {% endfor %}
-    </select>
-    <input type = 'text' name = 'dev-text'></div>
-    <div>Developer E-Mail: <input type = 'email' name = 'dev-email'></div>
-    <div>Developer Twitter: <input type = 'text' name = 'dev-twitter'></div>
-    <div>Played Last Year: 
+    </select></td>
+    </tr>
+    <tr><td>Developer Name:</td> <td><input type = 'text' name = 'dev-text'></td></tr>
+    <tr><td>Developer E-Mail:</td> <td><input type = 'email' name = 'dev-email'></td></tr>
+    <tr><td>Developer Twitter:</td> <td><input type = 'text' name = 'dev-twitter'></td></tr>
+    <tr><td>Played Last Year:</td> <td>
 	<input type='radio' name= 'lastyear' value = 'False' checked>No
 	<input type='radio' name= 'lastyear' value = 'True'>Yes
-    <div><input type = 'submit' value = 'submit'></div>
+    </td></tr>
+    </table>
+    <input type = 'submit' value = 'submit'></div>
 </form>
 {% endblock %}
 
