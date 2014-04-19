@@ -5,7 +5,7 @@ from submit.models import Developer, Game
 # Create your views here.
 
 def main_page(request):
-    developer = Developer.objects.all()
+    developer = Developer.objects.all().order_by('name')
     message = 'Enter info here:'
     context = {
 	'developer' : developer,
@@ -13,6 +13,9 @@ def main_page(request):
     }
 
     return render(request, 'submit/form.html', context)
+
+#this is the ugliest shit ever
+#like, seriously, wtf
 def send(request):
     testtext = 'There is no error.'
     games = Game.objects.all()
@@ -24,6 +27,7 @@ def send(request):
 	    halt = True
 	    testtext = 'duplicate game'
 	    continue
+    #could these have been done more elegantly? probably (definitely)
     for d in devs:
 	if request.POST.get('dev-text') == d.name:
  	    halt = True
@@ -35,8 +39,7 @@ def send(request):
     if request.POST.get('dev-drop') != 'NotADev' and request.POST.get('dev-text') != '':
 	halt = True
 	testtext = 'Two developers'
-    #lazy catch all error
-    #TODO return to form page w/ error
+    #lazy catch all error (it's not even real exception handling)
     if halt == True:
 	testtext = 'Fuck your couch: ' + testtext
 	return render(request, 'submit/form.html', {
