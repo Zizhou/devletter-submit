@@ -36,14 +36,15 @@ def send(request):
     if request.POST.get('dev-drop') == 'NotADev' and request.POST.get('dev-text') == '':
 	halt = True
 	testtext = 'No dev selected'
-    if request.POST.get('dev-drop') != 'NotADev' and request.POST.get('dev-text') != '':
+    if request.POST.get('dev-drop') != 'NotADev' and request.POST.get('dev-text') != None:
 	halt = True
 	testtext = 'Two developers'
     #lazy catch all error (it's not even real exception handling)
     if halt == True:
 	testtext = 'Fuck your couch: ' + testtext
+        print request.POST.get('dev-text')
 	return render(request, 'submit/form.html', {
-	    'developer': Developer.objects.all(),
+	    'developer': Developer.objects.all().order_by('name'),
 	    'systemmessage' : testtext})
     else:
 	#create and save the new record
