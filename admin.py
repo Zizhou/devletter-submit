@@ -7,12 +7,12 @@ class GameInline(admin.StackedInline):
     model = Game
 
 class DeveloperAdmin(admin.ModelAdmin):
-    fields = ['name', 'email', 'twitter']
+    fields = ['name', 'email', 'twitter', 'skype', 'url', 'notes', 'mailing address']
 
     inlines = [GameInline]
 
 class GameAdmin(admin.ModelAdmin):
-    fields = ['name', 'developer', 'lastyear']
+    fields = ['name', 'developer', 'lastyear', 'url','genre']
 
 
 admin.site.register(Game, GameAdmin)
