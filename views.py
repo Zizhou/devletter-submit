@@ -1,10 +1,22 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
-from submit.models import Developer, Game
+from submit.models import Developer, Game, GameForm, DeveloperForm
 # Create your views here.
 
 def main_page(request):
+    if request.method == 'POST':
+        gameform = GameForm(request.POST)
+        return render(request, 'it may have worked. or not')
+    else:
+        gameform = GameForm()
+        devform = DeveloperForm()
+        return render(request, 'submit/protoform.html', {
+            'gameform' : gameform, 
+            'devform' : devform,
+        })
+
+def main_page_1(request):
     developer = Developer.objects.all().order_by('name')
     message = 'Enter info here:'
     context = {
@@ -12,7 +24,8 @@ def main_page(request):
 	'systemmessage' : message
     }
 
-    return render(request, 'submit/form.html', context)
+    return render(request, 'submit/protoform.html', context)
+    #return render(request, 'submit/form.html', context)
 
 #this is the ugliest shit ever
 #like, seriously, wtf

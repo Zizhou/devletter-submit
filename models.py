@@ -1,11 +1,13 @@
 from django.db import models
+from django import forms
+from django.forms import ModelForm
 from django.contrib.auth.models import User
 
 # Create your models here.
 
 class Developer(models.Model):
     name = models.CharField(max_length = 200, unique = True)
-    email = models.EmailField(max_length = 75, blank = True)
+    email = models.CharField(max_length = 200, blank = True)
     twitter = models.CharField(max_length = 140, blank = True)
     skype = models.CharField(max_length = 75, blank = True)
     url = models.CharField(max_length = 200, blank = True)
@@ -31,4 +33,17 @@ class Game(models.Model):
     def __unicode__(self):
 	return self.name
 
+#I wonder if it's bad form to put this here and not a forms.py file...?
 
+class GameForm(ModelForm):
+    #override developer form for more customization
+    developer = forms.ModelChoiceField(queryset  = Developer.objects.all().order_by('name' ), empty_label = 'Add new developer:')
+    class Meta:
+        model = Game
+        fields = '__all__'
+
+class DeveloperForm(ModelForm):
+    # TODO notes = forms.TextField = 
+    class Meta:
+        model = Developer
+        fields = '__all__'
