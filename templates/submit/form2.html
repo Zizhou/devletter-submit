@@ -1,0 +1,49 @@
+{% extends 'mybase.html' %}
+
+
+{% block body %}
+<!-- adventures in javascript! yay! -->
+<script type="text/javascript">
+function process(selection){
+    if (selection.selectedIndex != 0){
+	document.getElementById('dtext').disabled = true;
+	document.getElementById('dmail').disabled = true;
+	document.getElementById('dtwit').disabled = true;
+    }
+    else{
+	document.getElementById('dtext').disabled = false;
+	document.getElementById('dmail').disabled = false;
+	document.getElementById('dtwit').disabled = false;
+    }
+}
+</script>
+
+
+
+{{ systemmessage }}
+<br>
+<form action = '{% url 'submit:send' %}' method = 'post' name = 'submitform'>
+{% csrf_token %}
+    <table>
+    <tr><td>Game:</td><td><input type = 'text' name = 'game' required></td></tr>
+    <tr><td>Developer:</td>
+	<td><select name = 'dev-drop' onchange="process(this)" >
+	    <option value = 'NotADev'>Add New Developer:</option>
+	    <option value = 'ReallyNotADev'>----------</option>
+	    {% for d in developer%}
+		<option value = '{{d.name}}'>{{d.name}}</option>
+	    {% endfor %}
+    </select></td>
+    </tr>
+    <tr><td>Developer Name:</td> <td><input type = 'text' name = 'dev-text' id = 'dtext'></td></tr>
+    <tr><td>Developer E-Mail:</td> <td><input type = 'email' name = 'dev-email' id = 'dmail'></td></tr>
+    <tr><td>Developer Twitter:</td> <td><input type = 'text' name = 'dev-twitter' id = 'dtwit'></td></tr>
+    <tr><td>Played Last Year:</td> <td>
+	<input type='radio' name= 'lastyear' value = 'False' checked>No
+	<input type='radio' name= 'lastyear' value = 'True'>Yes
+    </td></tr>
+    </table>
+    <input type = 'submit' value = 'submit'></div>
+</form>
+{% endblock %}
+

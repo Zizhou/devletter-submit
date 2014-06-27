@@ -1,0 +1,66 @@
+{% extends 'mybase.html' %}
+{% load widget_tweaks %}
+{% block head %}
+
+<style>
+div.box { background-color:#F7C6EA;float:left;margin:5px; }
+div.formtext { width:50%;float:left; }
+div.formform { width:50%;float:left; }
+</style>
+
+<script>
+
+<!-- js weirds me out, man -->
+//automagical panel for extra info
+$(document).ready(function(){
+    $( "#button" ).click(function(){
+        $( "#moreinfo" ).toggle( "blind" );
+                    
+    });
+});
+//enable/disable developer fields
+$(document).ready(function(){
+    $( "#id_developer" ).change(function(){
+        if(this.value == ''){
+            $( ".dev_field" ).removeAttr("disabled");
+        }
+        else {
+            $( ".dev_field" ).attr("disabled", "disabled");
+        };
+    });
+});
+</script>
+{% endblock %}
+{% block pagetitle %}
+GAME/DEVELOPER SUBMISSION FORM
+{% endblock %}
+
+
+{% block body %}
+<div class = 'box' id = 'info' style = 'width:40%;height:200px'>
+    <div class = formtext>Game:</div>{{gameform.name}}<div style = "clear:both"></div>
+    <div class = formtext>Played Last Year:</div>{{gameform.lastyear}}<div style = "clear:both"></div>
+
+    <div class = formtext>Developer:</div>{{gameform.developer}}<div style = "clear:both"></div>
+
+    <div class = formtext>Developer Name:</div>{{devform.name|add_class:'dev_field'}}<div style = "clear:both"></div>
+
+    <div class = formtext>Developer E-Mail:</div><div style = "clear:both"></div>
+
+</div>
+
+<div class = 'box' id = 'button' style = 'width:40;height:200px'>
+I AM A BUTT<br>
+...-ON
+</div>
+<div class = 'box' id = 'moreinfo' style = 'width:45%;height:200px;display:none;' >
+TEXT
+TEXT
+TEXT<br>
+terxtdsgfsafsda<br>
+fddfdfdddd 
+{{devform.notes|add_class:'dev_field'}}
+<div class = 'formform'>{{devform.name|add_class:'dev_field'}}</div>
+</div>
+<div style='clear:both;'/ >
+{% endblock %}
