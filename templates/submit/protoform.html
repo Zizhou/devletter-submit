@@ -3,14 +3,15 @@
 {% block head %}
 
 <style>
-div.box { background-color:#F7C6EA;float:left;margin:5px; }
-div.formtext { width:50%;float:left; }
+div.box { background-color:#F7C6EA;float:left;margin:5px;padding:5px; }
+div.formtext { width:160;float:left; }
 div.formform { width:50%;float:left; }
 </style>
 
 <script>
 
-<!-- js weirds me out, man -->
+//js/jquery weirds me out, man
+
 //automagical panel for extra info
 $(document).ready(function(){
     $( "#button" ).click(function(){
@@ -18,9 +19,15 @@ $(document).ready(function(){
                     
     });
 });
+//search for duplicate game onBlur
+$(document).ready(function(){
+    $ ( "#game-name" ).blur(function(){
+        alert(this.value);//replace with search function later
+    });
+});
 //enable/disable developer fields
 $(document).ready(function(){
-    $( "#id_developer" ).change(function(){
+    $( "#game-developer" ).change(function(){
         if(this.value == ''){
             $( ".dev_field" ).removeAttr("disabled");
         }
@@ -37,30 +44,50 @@ GAME/DEVELOPER SUBMISSION FORM
 
 
 {% block body %}
-<div class = 'box' id = 'info' style = 'width:40%;height:200px'>
-    <div class = formtext>Game:</div>{{gameform.name}}<div style = "clear:both"></div>
-    <div class = formtext>Played Last Year:</div>{{gameform.lastyear}}<div style = "clear:both"></div>
+<form action = '{% url 'submit:main' %}' method = 'POST' name = 'submitform'>
+{% csrf_token %}
+    <div class = 'box' id = 'info' style = 'width:40%;height:200px'>
+        <div style = 'width:100%;float:left;text-align:center'>
+            Essential Information
+        </div><div style = 'clear:both'></div>
+        <div class = formtext>Game:</div>{{gameform.name}}
+        <div style = "clear:both"></div>
+        <div class = formtext>Played Last Year:</div>{{gameform.lastyear}}
+        <div style = "clear:both"></div>
 
-    <div class = formtext>Developer:</div>{{gameform.developer}}<div style = "clear:both"></div>
+        <div class = formtext>Developer:</div>{{gameform.developer}}
+        <div style = "clear:both"></div>
 
-    <div class = formtext>Developer Name:</div>{{devform.name|add_class:'dev_field'}}<div style = "clear:both"></div>
+        <div class = formtext>Developer Name:</div>{{devform.name|add_class:'dev_field'}}
+        <div style = "clear:both"></div>
 
-    <div class = formtext>Developer E-Mail:</div><div style = "clear:both"></div>
+        <div class = formtext>Developer E-Mail:</div>{{devform.email|add_class:'dev_field'}}
+        <div style = "clear:both"></div>
+        <div style = 'width:100%;text-align:center;padding:20px;'><input type = 'submit' value = 'Submit All'></div> 
 
-</div>
+    </div>
 
-<div class = 'box' id = 'button' style = 'width:40;height:200px'>
-I AM A BUTT<br>
-...-ON
-</div>
-<div class = 'box' id = 'moreinfo' style = 'width:45%;height:200px;display:none;' >
-TEXT
-TEXT
-TEXT<br>
-terxtdsgfsafsda<br>
-fddfdfdddd 
-{{devform.notes|add_class:'dev_field'}}
-<div class = 'formform'>{{devform.name|add_class:'dev_field'}}</div>
-</div>
-<div style='clear:both;'/ >
+    <div class = 'box' id = 'button' style = 'width:40;height:200px'>
+        I AM A BUTT<br>
+        ...-ON
+    </div>
+    <div class = 'box' id = 'moreinfo' style = 'width:45%;height:400px;display:none;' >
+        <div style = 'width:100%;float:left;text-align:center'>
+            Additional Information
+        </div><div style = 'clear:both'></div>
+        <div class = 'formtext'>Game URL:</div>{{gameform.url}}
+        <div class = 'formtext'>Developer Skype:</div>{{devform.skype|add_class:'dev_field'}}
+        <div style='clear:both;'></div>
+        <div class = 'formtext'>Developer URL:</div>{{devform.url|add_class:'dev_field'}}
+        <div style='clear:both;'></div>
+        <div class = 'formtext'>Developer Address</div>{{devform.mailing_address|add_class:'dev_field'}}
+        <div style='clear:both;'></div>
+
+        <div class = 'formtext'>Developer Twittah:</div>{{devform.twitter|add_class:'dev_field'}}
+        <div style='clear:both;'></div>
+        <div class = 'formtext'>Additional Dev Notes:</div>{{devform.notes|add_class:'dev_field'}}
+        <div style='clear:both;'></div> 
+    </div>
+</form>
+<div style='clear:both;'></div>
 {% endblock %}

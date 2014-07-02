@@ -33,7 +33,9 @@ class Game(models.Model):
     def __unicode__(self):
 	return self.name
 
-#I wonder if it's bad form to put this here and not a forms.py file...?
+#I wonder if it's bad form(hurr..) to put this here and not a forms.py file...?
+#TODO: custom name fields
+
 
 class GameForm(ModelForm):
     #override developer form for more customization
@@ -43,7 +45,8 @@ class GameForm(ModelForm):
         fields = '__all__'
 
 class DeveloperForm(ModelForm):
-    # TODO notes = forms.TextField = 
+    # TODO: make notes smaller
+    #notes = forms.TextField = 
     class Meta:
         model = Developer
         fields = '__all__'

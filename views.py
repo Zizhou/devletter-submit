@@ -3,14 +3,23 @@ from django.http import HttpResponse
 
 from submit.models import Developer, Game, GameForm, DeveloperForm
 # Create your views here.
+# OK, I'll do that, since you asked so nicely.
 
 def main_page(request):
     if request.method == 'POST':
+#TODO validation
         gameform = GameForm(request.POST)
-        return render(request, 'it may have worked. or not')
+        devform = DeveloperForm(request.POST)
+
+        context = {
+            'devform' : devform,
+            'gameform' : gameform,
+        }
+
+        return render(request, 'submit/protoform.html', context)
     else:
-        gameform = GameForm()
-        devform = DeveloperForm()
+        gameform = GameForm(auto_id = '%s', prefix='game')
+        devform = DeveloperForm(auto_id = '%s', prefix='dev')
         return render(request, 'submit/protoform.html', {
             'gameform' : gameform, 
             'devform' : devform,
