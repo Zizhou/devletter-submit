@@ -25,6 +25,16 @@ def main_page(request):
             'devform' : devform,
         })
 
+#facilitate game name lookup with ajax
+def name_lookup(request, name):
+    present = False
+    #case inensitive lookup. >0 means it presumably exists
+    if Game.objects.filter(name__iexact = name).count() > 0:
+        present = True        
+    return HttpResponse(present)
+
+###deprecated below
+
 def main_page_1(request):
     developer = Developer.objects.all().order_by('name')
     message = 'Enter info here:'
@@ -33,8 +43,7 @@ def main_page_1(request):
 	'systemmessage' : message
     }
 
-    return render(request, 'submit/protoform.html', context)
-    #return render(request, 'submit/form.html', context)
+    return render(request, 'submit/form.html', context)
 
 #this is the ugliest shit ever
 #like, seriously, wtf

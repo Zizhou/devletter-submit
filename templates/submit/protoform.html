@@ -19,10 +19,14 @@ $(document).ready(function(){
                     
     });
 });
-//search for duplicate game onBlur
+//search for duplicate game when input loses focus 
 $(document).ready(function(){
     $ ( "#game-name" ).blur(function(){
-        alert(this.value);//replace with search function later
+        $.get( '/submit/name_lookup/' + this.value, function(data){
+            if(data == 'True') {
+                alert('Warning! This game aleady exists!');//replace with inline warning in the future
+            };
+        });
     });
 });
 //enable/disable developer fields
@@ -48,7 +52,7 @@ GAME/DEVELOPER SUBMISSION FORM
 {% csrf_token %}
     <div class = 'box' id = 'info' style = 'width:40%;height:200px'>
         <div style = 'width:100%;float:left;text-align:center'>
-            Essential Information
+            Essential Information<p>
         </div><div style = 'clear:both'></div>
         <div class = formtext>Game:</div>{{gameform.name}}
         <div style = "clear:both"></div>
@@ -73,9 +77,12 @@ GAME/DEVELOPER SUBMISSION FORM
     </div>
     <div class = 'box' id = 'moreinfo' style = 'width:45%;height:400px;display:none;' >
         <div style = 'width:100%;float:left;text-align:center'>
-            Additional Information
+            Additional Information<p>
         </div><div style = 'clear:both'></div>
         <div class = 'formtext'>Game URL:</div>{{gameform.url}}
+        <div style = 'clear:both'></div>
+        <div class = 'formtext'>Game Genre:</div>{{gameform.genre}}
+        <div style = 'clear:both'></div>
         <div class = 'formtext'>Developer Skype:</div>{{devform.skype|add_class:'dev_field'}}
         <div style='clear:both;'></div>
         <div class = 'formtext'>Developer URL:</div>{{devform.url|add_class:'dev_field'}}
@@ -85,7 +92,7 @@ GAME/DEVELOPER SUBMISSION FORM
 
         <div class = 'formtext'>Developer Twittah:</div>{{devform.twitter|add_class:'dev_field'}}
         <div style='clear:both;'></div>
-        <div class = 'formtext'>Additional Dev Notes:</div>{{devform.notes|add_class:'dev_field'}}
+        <div class = 'formtext' style = 'width:100%;'>Other Developer Notes:</div>{{devform.notes|add_class:'dev_field'}}
         <div style='clear:both;'></div> 
     </div>
 </form>

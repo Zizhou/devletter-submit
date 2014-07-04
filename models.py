@@ -34,7 +34,6 @@ class Game(models.Model):
 	return self.name
 
 #I wonder if it's bad form(hurr..) to put this here and not a forms.py file...?
-#TODO: custom name fields
 
 
 class GameForm(ModelForm):
