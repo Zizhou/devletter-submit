@@ -2,6 +2,7 @@ from django.db import models
 from django import forms
 from django.forms import ModelForm
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 
 # Create your models here.
 
@@ -33,6 +34,11 @@ class Game(models.Model):
     def __unicode__(self):
 	return self.name
 
+    def validate(self, post_data):
+                
+        
+        return True
+
 #I wonder if it's bad form(hurr..) to put this here and not a forms.py file...?
 
 
@@ -49,3 +55,14 @@ class DeveloperForm(ModelForm):
     class Meta:
         model = Developer
         fields = '__all__'
+
+###validators:
+#fuck me, I don't know how this works
+
+#raise validation error if duplicate game name exists
+def validate_game_name(value):
+    if Game.objects.filter(name__iexact = value).count > 0:
+        msg  = 'Game aleady exists!'
+        raise ValidationError(msg)
+    return value
+
