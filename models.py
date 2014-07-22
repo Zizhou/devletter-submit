@@ -18,6 +18,7 @@ class Developer(models.Model):
     def __unicode__(self):
 	return self.name
 
+
 class Game(models.Model):
     name = models.CharField(max_length = 200, unique = True)
     developer = models.ForeignKey(Developer)
@@ -34,10 +35,10 @@ class Game(models.Model):
     def __unicode__(self):
 	return self.name
 
-    def validate(self, post_data):
+#    def validate(self, post_data):
                 
         
-        return True
+#        return True
 
 #I wonder if it's bad form(hurr..) to put this here and not a forms.py file...?
 
@@ -49,20 +50,35 @@ class GameForm(ModelForm):
         model = Game
         fields = '__all__'
 
+    def clean_name(self):
+        if Game.objects.filter(name__iexact = self.cleaned_data.get('name')).count() > 0:
+            raise ValidationError('Duplicate game!')
+        return self.cleaned_data.get('name')
+
+#this one probably needs work
+#in fact, I'm sure it's missing some important validation
+    def clean_developer(self):
+        if not self.developer:
+            raise ValidationError('Duplicate dev and/or you fucked up the form in a non-standard way.')
+        return self.cleaned_data.get('developer')
+
+#helper function to try to insert missing developer
+#it doesn't really work
+    def get_developer(self, dev):
+        try:
+            self.developer.data = dev
+            return True
+        except:
+            return False
+
 class DeveloperForm(ModelForm):
     # TODO: make notes smaller
     #notes = forms.TextField = 
     class Meta:
         model = Developer
         fields = '__all__'
-
-###validators:
-#fuck me, I don't know how this works
-
-#raise validation error if duplicate game name exists
-def validate_game_name(value):
-    if Game.objects.filter(name__iexact = value).count > 0:
-        msg  = 'Game aleady exists!'
-        raise ValidationError(msg)
-    return value
+    def clean_name(self):
+        if Developer.objects.filter(name__iexact = self.cleaned_data.get('name')).count() > 0:
+            raise ValidationError('Duplicate dev!')
+        return self.cleaned_data.get('name')
 

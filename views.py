@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.core.exceptions import ValidationError
 
 from submit.models import Developer, Game, GameForm, DeveloperForm
 # Create your views here.
@@ -9,6 +10,8 @@ from submit.models import Developer, Game, GameForm, DeveloperForm
 ###main view
 #should I just switch it to a class based one? is it time?
 def main_page(request):
+    alert_message = ''
+    success = ''
     if request.method == 'POST':
         #preprocess to seperate prefixes because I am a bad
         game_dict = game_process(request.POST)
@@ -17,26 +20,58 @@ def main_page(request):
         gform = GameForm(game_dict)
         dform = DeveloperForm(dev_dict)
         try:
-            #check validity of form data for duplicates
-            gform.is_valid()
-            dform.is_valid()
+            #gform might depend on dform, depending on whether the user selected
+            #an existing dev or made a new one
+            dtemp = Developer()
+            gtemp = Game()
+            dev_needs_saving = False
+            if dform.is_valid():
+                dtemp = dform.save()
+                print 'dev testing'
+                print dtemp.id
+                gform.data['developer'] = dtemp.id
+                print gform.data.get('developer')
+                print '~~~~~'
+                print gform.data
+                print '~~~~~'
+                dev_needs_saving = True
+            elif 'developer' in gform.fields: 
+                print gform.fields.get('developer')
+                print gform.data.get('developer')
+                print 'lololol'
+            else:
+                raise ValidationError('Developer fields are wrong, somehow!')
+
+            #one way or another, the gform should be valid now
+            #I hope
+            print 'gform'
+            print gform.data
+            print gform.data.get('developer')
+            print gform.is_valid()
             print gform.cleaned_data
-            print dform.cleaned_data
-            #save dev entry(if one was not specified 
-            if not gform.cleaned_data['developer']
-                dtemp 
-            #save game entry
-            #gtemp = Game(gform.
-            return HttpResponse('hai')
-        except e:
-            print e#
-            return HttpResponse(str(e))
+            #reasons for failure:
+            #duplicate dev will trigger invalid game, but only verify here
+            #duplicate game will also trigger, but at least tell you why
+            if gform.is_valid():
+                gtemp = gform.save()
+                if dev_needs_saving: dform.save()
+                success = 'Success! ' + gtemp.name + ' by ' + gtemp.developer.name + ' has been added.'
+            else:
+                print 'gform failed'
+                raise ValidationError('Something is wrong with your game fields.')
+        except ValidationError as e:
+            print e
+            alert_message = [gform._errors, e]
+    print alert_message
+
     #remember to include the custom id and prefix 
     gameform = GameForm(auto_id = '%s', prefix='game')
     devform = DeveloperForm(auto_id = '%s', prefix='dev')
-    return render(request, 'submit/protoform.html', {
+    return render(request, 'submit/form.html', {
         'gameform' : gameform, 
         'devform' : devform,
+        'success' : success,
+        'alert' : alert_message,
     })
 
 ###handles game name lookup in conjunction with ajax in template
@@ -49,6 +84,14 @@ def name_lookup(request, name):
     if Game.objects.filter(name__iexact = name).count() > 0:
         present = True        
     return HttpResponse(present)
+#developer version of above
+def dev_lookup(request, name):
+    present = False
+    #case inensitive lookup. >0 means it presumably exists
+    if Developer.objects.filter(name__iexact = name).count() > 0:
+        present = True        
+    return HttpResponse(present)
+
 
 ###ugly hack to seperate out game and dev data from POST data because prefixes 
 ###my db field names are bad and I should feel bad
@@ -59,6 +102,8 @@ def game_process(POST):
     for data in POST:
         if str(data)[:4] == 'game':
             game_dict[str(data)[5:]] = POST.get(data)
+    #this next bit is an affront to humanity
+         
     return game_dict
 
 #so, a more flexible function where I pass in prefix as a param would be more
@@ -73,7 +118,32 @@ def dev_process(POST):
             dev_dict[str(data)[4:]] = POST.get(data)
     return dev_dict
 
-
+'''
+            if
+            gtemp = Game(**gform.cleaned_data)
+            #save dev entry(if one was not specified)
+            if not 'developer' in gform.fields:
+                dtemp = Developer(**dform.fields)
+                #real validity check?
+                print 'check dev valid'
+                if not dform.is_valid():
+                    raise ValidationError('something is wrong with the dev field!')
+                
+                print dtemp
+                gtemp.developer = Developer(**dform.fields)
+            #save game entry
+            #gtemp = Game(**gform.cleaned_data)
+            print 'check game valid'
+            print gform.fields
+            if not gform.is_valid():
+                raise ValidationError('something is wrong with the game field!')
+            print gtemp
+            alert_message = 'Success! ' + gtemp.name + ' by ' + gtemp.developer.name + ' was successfully added.'
+        #has something gone horribly wrong?
+        except ValidationError as e:
+            print e#
+            alert_message = str(e)
+'''
 
 ###deprecated below
 ###apparently all of this was just *wrong*, anyway

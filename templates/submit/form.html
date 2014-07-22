@@ -1,49 +1,131 @@
 {% extends 'mybase.html' %}
+{% load widget_tweaks %}
+{% block head %}
+
+<style>
+div.box { background-color:#F7C6EA;float:left;margin:5px;padding:5px; }
+div.formtext { width:160;float:left; }
+div.formform { width:50%;float:left; }
+</style>
+
+<script>
+
+//js/jquery weirds me out, man
+
+//automagical panel for extra info
+$(document).ready(function(){
+    $( "#button" ).click(function(){
+        $( "#moreinfo" ).toggle( "blind" );
+                    
+    });
+});
+//search for duplicate game when input loses focus 
+$(document).ready(function(){
+    $( "#game-name" ).blur(function(){
+        $.get( '/submit/name_lookup/' + this.value, function(data){
+            if(data == 'True') {
+                $( '#galert' ).html('Warning! This game already exists in the database');
+            }
+            else{
+                $( '#galert' ).html('');
+ 
+            };
+        });
+    });
+});
+//search for duplicate dev when input loses focus 
+$(document).ready(function(){
+    $( "#dev-name" ).blur(function(){
+        $.get( '/submit/dev_lookup/' + this.value, function(data){
+            if(data == 'True'){
+                $( '#dalert' ).html('Warning! This dev already exists in the database');
+            }
+            else{
+                $( '#dalert' ).html('');
+ 
+            };
+        });
+    });
+});
+
+//enable/disable developer fields
+$(document).ready(function(){
+    $( "#game-developer" ).change(function(){
+        if(this.value == ''){
+            $( ".dev_field" ).removeAttr("disabled");
+        }
+        else {
+            $( ".dev_field" ).attr("disabled", "disabled");
+        };
+    });
+});
+</script>
+{% endblock %}
+{% block pagetitle %}
+GAME/DEVELOPER SUBMISSION FORM
+<div id = galert>
+</div>
+
+<div id = dalert>
+</div>
+<div id = alert>
+{% for a in alert %}
+{{ a }}
+{% endfor %}
+</div>
+<div>
+{{success}}
+</div>
+{% endblock %}
 
 
 {% block body %}
-<!-- adventures in javascript! yay! -->
-<script type="text/javascript">
-function process(selection){
-    if (selection.selectedIndex != 0){
-	document.getElementById('dtext').disabled = true;
-	document.getElementById('dmail').disabled = true;
-	document.getElementById('dtwit').disabled = true;
-    }
-    else{
-	document.getElementById('dtext').disabled = false;
-	document.getElementById('dmail').disabled = false;
-	document.getElementById('dtwit').disabled = false;
-    }
-}
-</script>
-
-
-
-{{ systemmessage }}
-<br>
-<form action = '{% url 'submit:send' %}' method = 'post' name = 'submitform'>
+<form action = '{% url 'submit:main' %}' method = 'POST' name = 'submitform'>
 {% csrf_token %}
-    <table>
-    <tr><td>Game:</td><td><input type = 'text' name = 'game' required></td></tr>
-    <tr><td>Developer:</td>
-	<td><select name = 'dev-drop' onchange="process(this)" >
-	    <option value = 'NotADev'>Add New Developer:</option>
-	    <option value = 'ReallyNotADev'>----------</option>
-	    {% for d in developer%}
-		<option value = '{{d.name}}'>{{d.name}}</option>
-	    {% endfor %}
-    </select></td>
-    </tr>
-    <tr><td>Developer Name:</td> <td><input type = 'text' name = 'dev-text' id = 'dtext'></td></tr>
-    <tr><td>Developer E-Mail:</td> <td><input type = 'email' name = 'dev-email' id = 'dmail'></td></tr>
-    <tr><td>Developer Twitter:</td> <td><input type = 'text' name = 'dev-twitter' id = 'dtwit'></td></tr>
-    <tr><td>Played Last Year:</td> <td>
-	<input type='radio' name= 'lastyear' value = 'False' checked>No
-	<input type='radio' name= 'lastyear' value = 'True'>Yes
-    </td></tr>
-    </table>
-    <input type = 'submit' value = 'submit'></div>
-</form>
-{% endblock %}
+    <div class = 'box' id = 'info' style = 'width:40%;height:200px'>
+        <div style = 'width:100%;float:left;text-align:center'>
+            Essential Information<p>
+        </div><div style = 'clear:both'></div>
+        <div class = formtext>Game:</div>{{gameform.name|attr:'required'}}
+        <div style = "clear:both"></div>
+        <div class = formtext>Played Last Year:</div>{{gameform.lastyear}}
+        <div style = "clear:both"></div>
 
+        <div class = formtext>Developer:</div>{{gameform.developer}}
+        <div style = "clear:both"></div>
+
+        <div class = formtext>Developer Name:</div>{{devform.name|add_class:'dev_field'|attr:'required'}}
+        <div style = "clear:both"></div>
+
+        <div class = formtext>Developer E-Mail:</div>{{devform.email|add_class:'dev_field'}}
+        <div style = "clear:both"></div>
+        <div style = 'width:100%;text-align:center;padding:20px;'><input type = 'submit' value = 'Submit All'></div> 
+
+    </div>
+
+    <div class = 'box' id = 'button' style = 'width:40;height:200px;'>
+         <div style = 'transform:rotate(90deg);margin:5px;'>Expand/Contract</div>
+    </div>
+    <div class = 'box' id = 'moreinfo' style = 'width:45%;height:400px;display:none;' >
+        <div style = 'width:100%;float:left;text-align:center'>
+            Additional Information<p>
+        </div><div style = 'clear:both'></div>
+        <div class = 'formtext'>Game URL:</div>{{gameform.url}}
+        <div style = 'clear:both'></div>
+        <div class = 'formtext'>Game Genre:</div>{{gameform.genre}}
+        <div style = 'clear:both'></div>
+        <div class = 'formtext'>Developer Skype:</div>{{devform.skype|add_class:'dev_field'}}
+        <div style='clear:both;'></div>
+        <div class = 'formtext'>Developer URL:</div>{{devform.url|add_class:'dev_field'}}
+        <div style='clear:both;'></div>
+        <div class = 'formtext'>Developer Address:</div>{{devform.mailing_address|add_class:'dev_field'}}
+        <div style='clear:both;'></div>
+
+        <div class = 'formtext'>Developer Twittah:</div>{{devform.twitter|add_class:'dev_field'}}
+        <div style='clear:both;'></div>
+        <div class = 'formtext' style = 'width:100%;'>Other Developer Notes:</div>{{devform.notes|add_class:'dev_field'}}
+        <div style='clear:both;'></div> 
+    </div>
+</form>
+<div style='clear:both;'></div>
+{% endblock %}

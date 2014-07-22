@@ -21,14 +21,33 @@ $(document).ready(function(){
 });
 //search for duplicate game when input loses focus 
 $(document).ready(function(){
-    $ ( "#game-name" ).blur(function(){
+    $( "#game-name" ).blur(function(){
         $.get( '/submit/name_lookup/' + this.value, function(data){
             if(data == 'True') {
-                alert('Warning! This game aleady exists!');//replace with inline warning in the future
+                $( '#alert' ).html('Warning! This game already exists in the database');
+            }
+            else{
+                $( '#alert' ).html('');
+ 
             };
         });
     });
 });
+//search for duplicate dev when input loses focus 
+$(document).ready(function(){
+    $( "#dev-name" ).blur(function(){
+        $.get( '/submit/dev_lookup/' + this.value, function(data){
+            if(data == 'True'){
+                $( '#alert' ).html('Warning! This dev already exists in the database');
+            }
+            else{
+                $( '#alert' ).html('');
+ 
+            };
+        });
+    });
+});
+
 //enable/disable developer fields
 $(document).ready(function(){
     $( "#game-developer" ).change(function(){
@@ -44,6 +63,7 @@ $(document).ready(function(){
 {% endblock %}
 {% block pagetitle %}
 GAME/DEVELOPER SUBMISSION FORM
+<div id = alert>{{alert}}</div>
 {% endblock %}
 
 
@@ -71,9 +91,8 @@ GAME/DEVELOPER SUBMISSION FORM
 
     </div>
 
-    <div class = 'box' id = 'button' style = 'width:40;height:200px'>
-        I AM A BUTT<br>
-        ...-ON
+    <div class = 'box' id = 'button' style = 'width:40;height:200px;'>
+         <div style = 'transform:rotate(90deg);margin:5px;'>Expand/Contract</div>
     </div>
     <div class = 'box' id = 'moreinfo' style = 'width:45%;height:400px;display:none;' >
         <div style = 'width:100%;float:left;text-align:center'>
@@ -87,7 +106,7 @@ GAME/DEVELOPER SUBMISSION FORM
         <div style='clear:both;'></div>
         <div class = 'formtext'>Developer URL:</div>{{devform.url|add_class:'dev_field'}}
         <div style='clear:both;'></div>
-        <div class = 'formtext'>Developer Address</div>{{devform.mailing_address|add_class:'dev_field'}}
+        <div class = 'formtext'>Developer Address:</div>{{devform.mailing_address|add_class:'dev_field'}}
         <div style='clear:both;'></div>
 
         <div class = 'formtext'>Developer Twittah:</div>{{devform.twitter|add_class:'dev_field'}}
