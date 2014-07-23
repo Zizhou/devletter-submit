@@ -82,7 +82,7 @@ GAME/DEVELOPER SUBMISSION FORM
 {% block body %}
 <form action = '{% url 'submit:main' %}' method = 'POST' name = 'submitform'>
 {% csrf_token %}
-    <div class = 'box' id = 'info' style = 'width:40%;height:200px'>
+    <div class = 'box' id = 'info' style = 'width:400;height:200px'>
         <div style = 'width:100%;float:left;text-align:center'>
             Essential Information<p>
         </div><div style = 'clear:both'></div>
@@ -106,7 +106,7 @@ GAME/DEVELOPER SUBMISSION FORM
     <div class = 'box' id = 'button' style = 'width:40;height:200px;'>
          <div style = 'transform:rotate(90deg);margin:5px;'>Expand/Contract</div>
     </div>
-    <div class = 'box' id = 'moreinfo' style = 'width:45%;height:400px;display:none;' >
+    <div class = 'box' id = 'moreinfo' style = 'width:400;height:400px;display:none;' >
         <div style = 'width:100%;float:left;text-align:center'>
             Additional Information<p>
         </div><div style = 'clear:both'></div>
