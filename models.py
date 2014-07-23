@@ -57,11 +57,15 @@ class GameForm(ModelForm):
 
 #this one probably needs work
 #in fact, I'm sure it's missing some important validation
+    '''
     def clean_developer(self):
-        if not self.developer:
-            raise ValidationError('Duplicate dev and/or you fucked up the form in a non-standard way.')
-        return self.cleaned_data.get('developer')
-
+        try:
+            if not self.developer:
+                raise ValidationError('Duplicate dev and/or you fucked up the form in a non-standard way.')
+            return self.cleaned_data.get('developer')
+        except AttributeError as e:
+            return ValidationError('Something *really* fucked up*')
+    '''
 #helper function to try to insert missing developer
 #it doesn't really work
     def get_developer(self, dev):
