@@ -24,13 +24,22 @@ class Game(models.Model):
     developer = models.ForeignKey(Developer)
     lastyear = models.BooleanField()
     url = models.CharField(max_length = 200, blank = True)
+    notes = models.TextField(blank = True)
 
     GENRE_CHOICES = (
         ('Spoopy', 'Spoopy'),
-        ('Not-Spoopy', 'Not-Spoopy'),
+        ('Visual Novels', 'Visual Novels'),
+        ('Speedrun', 'Speedrun'),
+        ('Masocore', 'Masocore'),
+        ('Zen Hour', 'Zen Hour'),
+        ('Multiplayer(small)', 'Multiplayer(small)'),
+        ('Multiplayer(mass)', 'Multiplayer(mass)'),
+        ('Game Jam', 'Game Jam'),
+        ('Building', 'Building'),
     )
 
     genre = models.CharField(max_length = 100, choices =  GENRE_CHOICES, blank = True)
+
 
     def __unicode__(self):
 	return self.name
