@@ -12,7 +12,7 @@ class DeveloperAdmin(admin.ModelAdmin):
     inlines = [GameInline]
 
 class GameAdmin(admin.ModelAdmin):
-    fields = ['name', 'developer', 'lastyear', 'url','genre']
+    fields = ['name', 'developer', 'lastyear', 'url','genre', 'notes']
 
 
 admin.site.register(Game, GameAdmin)
