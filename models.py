@@ -25,32 +25,16 @@ class Game(models.Model):
     lastyear = models.BooleanField()
     url = models.CharField(max_length = 200, blank = True)
     notes = models.TextField(blank = True)
-
-    GENRE_CHOICES = (
-        ('Spoopy', 'Spoopy'),
-        ('Visual Novels', 'Visual Novels'),
-        ('Speedrun', 'Speedrun'),
-        ('Masocore', 'Masocore'),
-        ('Zen Hour', 'Zen Hour'),
-        ('Multiplayer(small)', 'Multiplayer(small)'),
-        ('Multiplayer(mass)', 'Multiplayer(mass)'),
-        ('Game Jam', 'Game Jam'),
-        ('Building', 'Building'),
-    )
-
-    genre = models.CharField(max_length = 100, choices =  GENRE_CHOICES, blank = True)
-
+    genre = models.ForeignKey('ThemeBlock', null = True)
 
     def __unicode__(self):
 	return self.name
 
-#    def validate(self, post_data):
-                
-        
-#        return True
-
-#I wonder if it's bad form(hurr..) to put this here and not a forms.py file...?
-
+class ThemeBlock(models.Model):
+    name = models.CharField(max_length = 100)
+    
+    def __unicode__(self):
+        return self.name
 
 class GameForm(ModelForm):
     #override developer form for more customization

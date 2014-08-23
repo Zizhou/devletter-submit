@@ -102,7 +102,6 @@ def game_process(POST):
     for data in POST:
         if str(data)[:4] == 'game':
             game_dict[str(data)[5:]] = POST.get(data)
-    #this next bit is an affront to humanity
          
     return game_dict
 
