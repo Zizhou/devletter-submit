@@ -25,7 +25,7 @@ class Game(models.Model):
     lastyear = models.BooleanField()
     url = models.CharField(max_length = 200, blank = True)
     notes = models.TextField(blank = True)
-    genre = models.ForeignKey('ThemeBlock', null = True)
+    genre = models.ForeignKey('ThemeBlock', blank = True, null = True)
 
     def __unicode__(self):
 	return self.name
