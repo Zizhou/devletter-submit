@@ -10,7 +10,7 @@ class POCInline(admin.StackedInline):
     model = PointOfContact
 
 class DeveloperAdmin(admin.ModelAdmin):
-    fields = ['name', 'email', 'twitter', 'skype', 'url', 'notes', 'mailing_address']
+    fields = ['name', 'email', 'prior_contact', 'twitter', 'skype', 'url', 'notes', 'mailing_address']
 
     inlines = [POCInline, GameInline]
 
