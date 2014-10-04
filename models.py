@@ -14,7 +14,7 @@ class Developer(models.Model):
     url = models.CharField(max_length = 200, blank = True)
     notes = models.TextField(blank = True)
     mailing_address = models.CharField(max_length = 300, blank = True)
-    prior_contact = models.BooleanField()
+    prior_contact = models.BooleanField(default = False)
 
     def __unicode__(self):
 	return self.name
