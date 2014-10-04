@@ -31,6 +31,9 @@ class PointOfContact(models.Model):
     def __unicode__(self):
         contact = unicode(self.developer.name) +" "+ self.name 
         return contact
+    class Meta:
+        ordering = ['developer']
+
 
 class Game(models.Model):
     name = models.CharField(max_length = 200, unique = True)
@@ -42,12 +45,18 @@ class Game(models.Model):
 
     def __unicode__(self):
 	return self.name
+    class Meta:
+        ordering = ['name']
+
 
 class ThemeBlock(models.Model):
     name = models.CharField(max_length = 100)
     
     def __unicode__(self):
         return self.name
+    class Meta:
+        ordering = ['name']
+
 
 class GameForm(ModelForm):
     #override developer form for more customization
