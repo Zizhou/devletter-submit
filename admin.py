@@ -1,15 +1,18 @@
 from django.contrib import admin
 
-from submit.models import Game, Developer, ThemeBlock
+from submit.models import Game, Developer, ThemeBlock, PointOfContact
 # Register your models here.
 
 class GameInline(admin.StackedInline):
     model = Game
 
+class POCInline(admin.StackedInline):
+    model = PointOfContact
+
 class DeveloperAdmin(admin.ModelAdmin):
     fields = ['name', 'email', 'twitter', 'skype', 'url', 'notes', 'mailing_address']
 
-    inlines = [GameInline]
+    inlines = [POCInline, GameInline]
 
 class GameAdmin(admin.ModelAdmin):
     fields = ['name', 'developer', 'lastyear', 'url','genre', 'notes']
@@ -17,7 +20,10 @@ class GameAdmin(admin.ModelAdmin):
 class ThemeBlockAdmin(admin.ModelAdmin):
     fields = ['name']
 
+class PointOfContactAdmin(admin.ModelAdmin):
+    fields = ['name', 'developer', 'email', 'notes']
 
 admin.site.register(Game, GameAdmin)
 admin.site.register(Developer, DeveloperAdmin)
 admin.site.register(ThemeBlock, ThemeBlockAdmin)
+admin.site.register(PointOfContact, PointOfContactAdmin)

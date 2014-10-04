@@ -14,6 +14,7 @@ class Developer(models.Model):
     url = models.CharField(max_length = 200, blank = True)
     notes = models.TextField(blank = True)
     mailing_address = models.CharField(max_length = 300, blank = True)
+    prior_contact = models.BooleanField()
 
     def __unicode__(self):
 	return self.name
@@ -24,6 +25,9 @@ class PointOfContact(models.Model):
     email = models.EmailField()
     notes = models.TextField(blank = True)
 
+    def __unicode__(self):
+        contact = unicode(self.developer.name) +" "+ self.name 
+        return contact
 
 class Game(models.Model):
     name = models.CharField(max_length = 200, unique = True)
