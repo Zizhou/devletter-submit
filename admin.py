@@ -10,12 +10,12 @@ class POCInline(admin.StackedInline):
     model = PointOfContact
 
 class DeveloperAdmin(admin.ModelAdmin):
-    fields = ['name', 'email', 'prior_contact', 'twitter', 'skype', 'url', 'notes', 'mailing_address', 'created']
+    fields = ['name', 'email', 'prior_contact', 'twitter', 'skype', 'url', 'notes', 'mailing_address', 'date_created']
 
     inlines = [POCInline, GameInline]
 
 class GameAdmin(admin.ModelAdmin):
-    fields = ['name', 'developer', 'lastyear', 'url','genre', 'notes', 'created']
+    fields = ['name', 'developer', 'lastyear', 'url','genre', 'notes', 'date_created']
 
 class ThemeBlockAdmin(admin.ModelAdmin):
     fields = ['name']

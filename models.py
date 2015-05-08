@@ -4,6 +4,8 @@ from django.forms import ModelForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
+import datetime
+
 # Create your models here.
 
 class Developer(models.Model):
@@ -15,7 +17,7 @@ class Developer(models.Model):
     notes = models.TextField(blank = True)
     mailing_address = models.CharField(max_length = 300, blank = True)
     prior_contact = models.BooleanField(default = False)
-    created = models.DateTimeField(auto_now_add = True)
+    date_created = models.DateTimeField(default = datetime.datetime.now)
 
     def __unicode__(self):
 	return self.name
@@ -43,7 +45,7 @@ class Game(models.Model):
     url = models.CharField(max_length = 200, blank = True)
     notes = models.TextField(blank = True)
     genre = models.ForeignKey('ThemeBlock', blank = True, null = True)
-    created = models.DateTimeField(auto_now_add = True)
+    date_created = models.DateTimeField(default = datetime.datetime.now)
 
     def __unicode__(self):
 	return self.name
