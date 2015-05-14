@@ -17,7 +17,7 @@ class Developer(models.Model):
     notes = models.TextField(blank = True)
     mailing_address = models.CharField(max_length = 300, blank = True)
     prior_contact = models.BooleanField(default = False)
-    date_created = models.DateTimeField(default = datetime.datetime.now)
+    date_created = models.DateTimeField(default=datetime.datetime.now, editable=False)
 
     def __unicode__(self):
 	return self.name
@@ -45,7 +45,7 @@ class Game(models.Model):
     url = models.CharField(max_length = 200, blank = True)
     notes = models.TextField(blank = True)
     genre = models.ForeignKey('ThemeBlock', blank = True, null = True)
-    date_created = models.DateTimeField(default = datetime.datetime.now)
+    date_created = models.DateTimeField(default=datetime.datetime.now, editable=False)
 
     def __unicode__(self):
 	return self.name
