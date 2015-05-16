@@ -12,6 +12,8 @@ class POCInline(admin.StackedInline):
 class DeveloperAdmin(admin.ModelAdmin):
     readonly_fields = ['date_created']
 
+    list_display = ['name', 'date_created']
+
     fields = ['name', 'email', 'prior_contact', 'twitter', 'skype', 'url', 'notes', 'mailing_address', 'date_created']
 
     inlines = [POCInline, GameInline]
