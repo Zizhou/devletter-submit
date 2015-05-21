@@ -1,6 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.core.exceptions import ValidationError
+
+from django.views.generic import View
 
 from submit.models import Developer, Game, GameForm, DeveloperForm
 # Create your views here.
@@ -210,3 +212,41 @@ def send(request):
 	return render(request, 'submit/form.html', {
 	    'developer': Developer.objects.all(),
 	    'systemmessage' : successtext})
+
+#holy fuckballs, what is all that gibberish above?
+#did I write that?
+
+###tool for filling in missing e-mail
+#now, this wouldn't actually need a purpose built too if it was on a spreadsheet
+#fine, I'll admit it: I overengineered this thing. it's mostly unnecessary
+#(not even mostly)
+#((to be fair to myself, it's way more elegant than the above *everything*))
+#
+#scans for Developer entries with missing e-mail field, presents the whole thing
+#to be reviewed/corrected
+class MissingView(View):
+    missing_form = DeveloperForm
+
+    def get(self, request):
+        missing_mail = Developer()
+        try:
+            missing_mail = Developer.objects.filter(email = '')[0]
+            print "got missing"
+        except:
+            return HttpResponse('no more to fix')
+        form = self.missing_form(instance = missing_mail)
+        context = {
+            'form' : form,
+        }
+        return render(request, 'submit/missing.html', context)
+
+    def post(self, request):
+        #try:
+        mail = request.POST.get('email')
+        post_name = request.POST.get('name')
+        changed = Developer.objects.get(name = post_name)
+        changed.email = mail
+        changed.save()
+        return redirect('/submit/missing/')
+        #except:
+            #return HttpResponse('ya done fucked up')

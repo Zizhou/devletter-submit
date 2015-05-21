@@ -1,0 +1,15 @@
+<html>
+
+<body>
+<form action = '{% url 'submit:missing' %}' method = 'POST' name = 'missingform'>
+{% csrf_token %}
+{{form.name}}<br>
+{{form.email}}</br>
+
+<input type = 'submit' value = 'Submit!'>
+</form>
+<form 
+</body>
+
+
+</html>
