@@ -230,18 +230,21 @@ class MissingView(View):
     def get(self, request):
         missing_mail = Developer()
         try:
-            missing_mail = Developer.objects.filter(email = '')[0]
+            missing_mail = Developer.objects.filter(email = '').order_by('?')[0]
             print "got missing"
         except:
             return HttpResponse('no more to fix')
         form = self.missing_form(instance = missing_mail)
         context = {
+            'dev' : missing_mail.game_set.all(),
             'form' : form,
         }
         return render(request, 'submit/missing.html', context)
 
     def post(self, request):
         #try:
+        if 'skippy' in request.POST:
+            return redirect('/submit/missing/')
         mail = request.POST.get('email')
         post_name = request.POST.get('name')
         changed = Developer.objects.get(name = post_name)

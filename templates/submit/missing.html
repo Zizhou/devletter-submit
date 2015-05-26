@@ -3,10 +3,19 @@
 <body>
 <form action = '{% url 'submit:missing' %}' method = 'POST' name = 'missingform'>
 {% csrf_token %}
-{{form.name}}<br>
-{{form.email}}</br>
+<div style='float:left;'>
+    {{form.name.label}} {{form.name}}<br>
+    {{form.email.label}} {{form.email}}</br>
+    <input type = 'submit' value = 'Submit!' name = 'submit'>
+    <input type = 'submit' value = 'Skip!' name = 'skippy'>
 
-<input type = 'submit' value = 'Submit!'>
+</div>
+<div style='float:left;'>
+    {% for x in dev %}
+    {{x}}<br>
+    {% endfor %}
+</div>
+<div style = 'clear:all;'/>
 </form>
 <form 
 </body>
