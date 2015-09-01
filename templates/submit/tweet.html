@@ -1,6 +1,7 @@
 <html>
 
 <body>
+{% if user.is_staff %}
 <form action = '{% url 'submit:tweet' %}' method = 'POST' name = 'tweetform'>
 {% csrf_token %}
 <div style='float:left;'>
@@ -11,7 +12,7 @@
 </form>
 <form 
 </body>
-
+{% endif %}
 {% load staticfiles %}
 <script type='text/javascript' src='{% static 'js/jquery.js' %}'></script>
 <script>
