@@ -19,7 +19,7 @@ class DeveloperAdmin(admin.ModelAdmin):
     inlines = [POCInline, GameInline]
 
 class GameAdmin(admin.ModelAdmin):
-    fields = ['name', 'developer', 'lastyear', 'url','genre', 'notes', 'date_created']
+    fields = ['name', 'developer', 'lastyear', 'url','genre', 'notes', 'date_created', 'tweet', 'owned_pc', 'owned_360', 'owned_ps3', 'owned_ps4', 'owned_xb1', 'owned_other', ]
     readonly_fields = ['date_created']
 class ThemeBlockAdmin(admin.ModelAdmin):
     fields = ['name']

@@ -46,7 +46,14 @@ class Game(models.Model):
     notes = models.TextField(blank = True)
     genre = models.ForeignKey('ThemeBlock', blank = True, null = True)
     date_created = models.DateTimeField(default=datetime.datetime.now, editable=False)
-
+    owned_pc = models.BooleanField(default = False)
+    owned_360 = models.BooleanField(default = False)
+    owned_ps3 = models.BooleanField(default = False)
+    owned_xb1 = models.BooleanField(default = False)
+    owned_ps4 = models.BooleanField(default = False)
+    owned_other = models.BooleanField(default = False)
+    tweet = models.CharField(max_length = 140, blank = True)
+    
     def __unicode__(self):
 	return self.name
     class Meta:
@@ -105,3 +112,6 @@ class DeveloperForm(ModelForm):
             raise ValidationError('Duplicate dev!')
         return self.cleaned_data.get('name')
 
+class TweetForm(forms.Form):
+    gameselect = forms.ModelChoiceField(queryset = Game.objects.all().order_by('name'), label = 'Selection')
+    tweet = forms.CharField(max_length = 140, label = 'Tweet:')

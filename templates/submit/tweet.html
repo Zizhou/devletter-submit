@@ -1,0 +1,25 @@
+<html>
+
+<body>
+<form action = '{% url 'submit:tweet' %}' method = 'POST' name = 'tweetform'>
+{% csrf_token %}
+<div style='float:left;'>
+{{form}}
+<input type = 'submit' value = 'Write Tweet' name = 'tweet_me'>
+</div>
+<div style = 'clear:all;'/>
+</form>
+<form 
+</body>
+
+{% load staticfiles %}
+<script type='text/javascript' src='{% static 'js/jquery.js' %}'></script>
+<script>
+$('#id_gameselect').change(function(){
+    $.get( '/submit/tweet_lookup/' + $('#id_gameselect option:selected').val(), function(data){
+        $('#id_tweet').val(data)
+    })
+});
+</script>
+
+</html>

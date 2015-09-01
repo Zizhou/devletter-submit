@@ -1,10 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.core.exceptions import ValidationError
 
 from django.views.generic import View
 
-from submit.models import Developer, Game, GameForm, DeveloperForm
+from submit.models import *
 # Create your views here.
 # OK, I'll do that, since you asked so nicely.
 
@@ -216,6 +216,27 @@ def send(request):
 #holy fuckballs, what is all that gibberish above?
 #did I write that?
 
+#eh, fuck class based views for now
+
+def tweet(request):
+    form = TweetForm
+    if request.method == 'POST':
+        form = TweetForm(request.POST)
+        if form.is_valid():
+            print form.cleaned_data['gameselect'].id
+            game = Game.objects.get(id = form.cleaned_data['gameselect'].id)
+            print game
+            game.tweet = form.cleaned_data['tweet']
+            game.save()
+    context = {
+        'form' : form,
+    }
+    return render(request, 'submit/tweet.html', context)
+
+def tweet_lookup(request, game_id):
+    tweet = get_object_or_404(Game.objects.filter(id = game_id)).tweet
+    return HttpResponse(tweet)
+
 ###tool for filling in missing e-mail
 #now, this wouldn't actually need a purpose built too if it was on a spreadsheet
 #fine, I'll admit it: I overengineered this thing. it's mostly unnecessary
@@ -253,3 +274,4 @@ class MissingView(View):
         return redirect('/submit/missing/')
         #except:
             #return HttpResponse('ya done fucked up')
+
