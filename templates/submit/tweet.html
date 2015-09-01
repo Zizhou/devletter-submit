@@ -17,8 +17,15 @@
 <script type='text/javascript' src='{% static 'js/jquery.js' %}'></script>
 <script>
 $('#id_gameselect').change(function(){
+    $('#id_tweet').val('');
+    $('#id_twitter').val('');
+   
     $.get( '/submit/tweet_lookup/' + $('#id_gameselect option:selected').val(), function(data){
-        $('#id_tweet').val(data)
+        var datum = JSON.parse(data);
+        console.log(datum.tweet)
+        console.log(datum.twitter)
+        $('#id_tweet').val(datum.tweet);
+        $('#id_twitter').val(datum.twitter);
     })
 });
 </script>

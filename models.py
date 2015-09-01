@@ -115,3 +115,4 @@ class DeveloperForm(ModelForm):
 class TweetForm(forms.Form):
     gameselect = forms.ModelChoiceField(queryset = Game.objects.all().order_by('name'), label = 'Selection')
     tweet = forms.CharField(max_length = 140, label = 'Tweet:')
+    twitter = forms.CharField(max_length = 140, label = 'Twitter:')

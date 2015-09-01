@@ -4,6 +4,8 @@ from django.core.exceptions import ValidationError
 
 from django.views.generic import View
 
+import json
+
 from submit.models import *
 # Create your views here.
 # OK, I'll do that, since you asked so nicely.
@@ -225,17 +227,27 @@ def tweet(request):
         if form.is_valid():
             print form.cleaned_data['gameselect'].id
             game = Game.objects.get(id = form.cleaned_data['gameselect'].id)
-            print game
+            dev = game.developer
             game.tweet = form.cleaned_data['tweet']
+            print form.cleaned_data['tweet']
+            dev.twitter = form.cleaned_data['twitter']
+            print form.cleaned_data['twitter']
             game.save()
+            dev.save()
     context = {
         'form' : form,
     }
     return render(request, 'submit/tweet.html', context)
 
 def tweet_lookup(request, game_id):
-    tweet = get_object_or_404(Game.objects.filter(id = game_id)).tweet
-    return HttpResponse(tweet)
+    game = get_object_or_404(Game.objects.filter(id = game_id))
+    all_tweet = {
+        'tweet': game.tweet,
+        'twitter': game.developer.twitter
+    }
+    data = json.dumps(all_tweet)
+    return HttpResponse(data)
+
 
 ###tool for filling in missing e-mail
 #now, this wouldn't actually need a purpose built too if it was on a spreadsheet
