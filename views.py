@@ -222,6 +222,7 @@ def send(request):
 
 def tweet(request):
     form = TweetForm
+    message = '>You haven\'t written anything yet.'
     if request.method == 'POST':
         form = TweetForm(request.POST)
         if form.is_valid():
@@ -234,8 +235,10 @@ def tweet(request):
             print form.cleaned_data['twitter']
             game.save()
             dev.save()
+            message = '>You wrote "'+ unicode(game.tweet)+'" to ' + unicode(dev.twitter)+'.'
     context = {
         'form' : form,
+        'message': message,
     }
     return render(request, 'submit/tweet.html', context)
 

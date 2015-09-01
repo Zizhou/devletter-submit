@@ -1,6 +1,7 @@
 <html>
 
 <body>
+{{message}}
 {% if user.is_staff %}
 <form action = '{% url 'submit:tweet' %}' method = 'POST' name = 'tweetform'>
 {% csrf_token %}
