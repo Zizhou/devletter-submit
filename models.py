@@ -55,7 +55,7 @@ class Game(models.Model):
     tweet = models.CharField(max_length = 140, blank = True)
     
     def __unicode__(self):
-	return self.name
+	    return self.name
     class Meta:
         ordering = ['name']
 
