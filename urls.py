@@ -8,6 +8,7 @@ urlpatterns = patterns('',
     url(r'^missing/$', views.MissingView.as_view(), name = 'missing'),
     url(r'^tweet/$', views.tweet, name = 'tweet'),
     url(r'^tweet_lookup/(?P<game_id>.*)$', views.tweet_lookup, name = 'tweet_lookup'), 
+    url(r'^nananananananana/$', views.na, name = 'batman'),
     #FUCKING regex
     url(r'^name_lookup/(?P<name>.*)$', views.name_lookup, name = 'lookup'), 
     url(r'^dev_lookup/(?P<name>.*)$', views.dev_lookup, name = 'dlookup'), 

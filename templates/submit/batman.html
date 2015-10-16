@@ -1,0 +1,8 @@
+<form action = '{%url 'submit:batman' %}' method = 'POST'>
+{% csrf_token %}
+{{form}}
+<input type = 'submit'> 
+</form>
+{% for x in info %}
+    {{x}}<br>
+{% endfor %}

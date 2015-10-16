@@ -116,3 +116,7 @@ class TweetForm(forms.Form):
     gameselect = forms.ModelChoiceField(queryset = Game.objects.all().order_by('name'), label = 'Selection')
     tweet = forms.CharField(max_length = 140, label = 'Tweet:')
     twitter = forms.CharField(max_length = 140, label = 'Twitter:')
+
+class NaForm(forms.Form):
+    mail = forms.CharField(max_length = 250, label = 'What does it say?')
+

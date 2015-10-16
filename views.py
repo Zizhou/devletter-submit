@@ -251,7 +251,22 @@ def tweet_lookup(request, game_id):
     data = json.dumps(all_tweet)
     return HttpResponse(data)
 
+from django.core import serializers
+def na(request):
+    if request.method == 'POST':
+        this_form = NaForm(request.POST)
+        if this_form.is_valid():
+            info = Developer.objects.filter(email = this_form.cleaned_data['mail'])
+            context = {
+            'info' : info,
+            'form' : NaForm,
+        }
+            return render(request, 'submit/batman.html', context)
 
+    context = {
+            'form' : NaForm,
+    }
+    return render(request, 'submit/batman.html', context)
 ###tool for filling in missing e-mail
 #now, this wouldn't actually need a purpose built too if it was on a spreadsheet
 #fine, I'll admit it: I overengineered this thing. it's mostly unnecessary
